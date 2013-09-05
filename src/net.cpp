@@ -1072,8 +1072,9 @@ void ThreadMapPort2(void* parg)
     const char * minissdpdpath = 0;
     struct UPNPDev * devlist = 0;
     char lanaddr[64];
+    int error = 0;
 
-    devlist = upnpDiscover(2000, multicastif, minissdpdpath, 0);
+    devlist = upnpDiscover(2000, multicastif, minissdpdpath, 0, 0, &error);
 
     struct UPNPUrls urls;
     struct IGDdatas data;
@@ -1085,13 +1086,9 @@ void ThreadMapPort2(void* parg)
         char intClient[16];
         char intPort[6];
 
-#ifndef __WXMSW__
-        r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
-	                        port, port, lanaddr, 0, "TCP", 0);
-#else
         r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
 	                        port, port, lanaddr, 0, "TCP", 0, "0");
-#endif
+
         if(r!=UPNPCOMMAND_SUCCESS)
             printf("AddPortMapping(%s, %s, %s) failed with code %d (%s)\n",
                 port, port, lanaddr, r, strupnperror(r));
