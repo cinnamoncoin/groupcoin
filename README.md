@@ -1,0 +1,4 @@
+groupcoin
+=========
+
+Groupcoin - my branch
